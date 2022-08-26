@@ -15,6 +15,10 @@
 
 	section {
 		display: grid;
+		/*width: 60%;*/
+		height: 75vh;
+		/*justify-content: stretch;*/
+		margin: 2rem;
 	}
 
 </style>

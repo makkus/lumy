@@ -13,28 +13,29 @@
 
 </script>
 
-<section >
-{#if related_scenes != null}
-<div class="control-row">
-{#each Object.entries(related_scenes) as [name, scene]}
-    <button class="control-button" on:click={() => handleClick(scene)} disabled={(scene == null) || scene.disabled}>
-        {name}
-    </button>
-{/each}
-</div>
+<section>
+  {#if related_scenes != null}
+    <div class="control-row">
+      {#each Object.entries(related_scenes) as [name, scene]}
+        <button class="control-button" on:click={() => handleClick(scene)} disabled={(scene == null) || scene.disabled}>
+          {name}
+        </button>
+      {/each}
+    </div>
 
-<div class="control-row">
-{#each Object.entries(related_scenes) as [name, scene]}
-    {#if (scene != null)}
-        {#each Object.entries(scene.related_scenes) as [sub_name, sub_scene]}
-            <button class="control-button" on:click={() => handleClick(sub_scene)} disabled={(sub_scene == null) || sub_scene.disabled}>
-                {sub_name}
+    <div class="control-row">
+      {#each Object.entries(related_scenes) as [name, scene]}
+        {#if (scene != null)}
+          {#each Object.entries(scene.related_scenes) as [sub_name, sub_scene]}
+            <button class="control-button" on:click={() => handleClick(sub_scene)}
+                    disabled={(sub_scene == null) || sub_scene.disabled}>
+              {sub_name}
             </button>
-        {/each}
-    {/if}
-{/each}
-</div>
-{/if}
+          {/each}
+        {/if}
+      {/each}
+    </div>
+  {/if}
 </section>
 
 <style>
@@ -44,6 +45,7 @@
         justify-content: center;
         gap: 4px;
     }
+
     .control-button {
         font-size: small;
         border-radius: 8px;
@@ -56,13 +58,8 @@
     }
 
     .control-button:hover {
-        background-color: lightskyblue;
+        background-color: var(--primary-color);
     }
 
-    .control-button[disabled]{
-      border: 1px solid #999999;
-      background-color: #cccccc;
-      color: #666666;
-    }
 
 </style>

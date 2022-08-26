@@ -5,6 +5,7 @@
 /* Do not modify it by hand - just update the pydantic models and then re-run the script
 */
 
+export type JobStatus = "__job_created__" | "__job_started__" | "__job_success__" | "__job_failed__";
 export type ValueStatus = "unknown" | "not set" | "none" | "default" | "set";
 
 /**
@@ -184,6 +185,101 @@ export interface ValueSchema {
   doc?: Documentation;
 }
 /**
+ * Base class that all models in kiara inherit from.
+ *
+ * This class provides utility functions for things like rendering the model on terminal or as html, integration into
+ * a tree hierarchy of the overall kiara context, hashing, etc.
+ */
+export interface ActiveJob {
+  /**
+   * The job id.
+   */
+  job_id: string;
+  /**
+   * The job details.
+   */
+  job_config: JobConfig;
+  /**
+   * The current status of the job.
+   */
+  status?: JobStatus & string;
+  /**
+   * The lob jog.
+   */
+  job_log: JobLog;
+  /**
+   * When the job was submitted.
+   */
+  submitted?: string;
+  /**
+   * When the job was started.
+   */
+  started?: string;
+  /**
+   * When the job was finished.
+   */
+  finished?: string;
+  /**
+   * The result(s).
+   */
+  results?: {
+    [k: string]: string;
+  };
+  /**
+   * Potential error message.
+   */
+  error?: string;
+}
+/**
+ * A class to hold the type and configuration for a module instance.
+ */
+export interface JobConfig {
+  /**
+   * The module type.
+   */
+  module_type: string;
+  /**
+   * The configuration for the module.
+   */
+  module_config?: {
+    [k: string]: unknown;
+  };
+  /**
+   * Whether the configuration of this module was augmented with the module type defaults etc.
+   */
+  is_resolved?: boolean;
+  /**
+   * A map of all the input fields and value references.
+   */
+  inputs: {
+    [k: string]: string;
+  };
+}
+export interface JobLog {
+  /**
+   * The logs for this job.
+   */
+  log?: LogMessage[];
+  /**
+   * Describes how much of the job is finished. A negative number means the module does not support progress tracking.
+   */
+  percent_finished?: number;
+}
+export interface LogMessage {
+  /**
+   * The time the message was logged.
+   */
+  timestamp?: string;
+  /**
+   * The log level.
+   */
+  log_level: number;
+  /**
+   * The log message
+   */
+  msg: string;
+}
+/**
  * A wrapper class that manages and retieves value data and its details.
  */
 export interface ValueDetails {
@@ -220,9 +316,45 @@ export interface ValueDetails {
    */
   pedigree_output_name: string;
   /**
-   * The python class that is associtated with this model.
+   * Information about the data type this value is made of.
+   */
+  data_type_info: DataTypeInfo;
+}
+/**
+ * Base class that all models in kiara inherit from.
+ *
+ * This class provides utility functions for things like rendering the model on terminal or as html, integration into
+ * a tree hierarchy of the overall kiara context, hashing, etc.
+ */
+export interface DataTypeInfo {
+  /**
+   * The registered name of this data type.
+   */
+  data_type_name: string;
+  /**
+   * The (optional) configuration for this data type.
+   */
+  data_type_config?: {
+    [k: string]: unknown;
+  };
+  /**
+   * Characteristics of this data type.
+   */
+  characteristics: DataTypeCharacteristics;
+  /**
+   * The python class that is associated with this model.
    */
   data_type_class: PythonClass;
+}
+export interface DataTypeCharacteristics {
+  /**
+   * Whether the data desribed by this data type behaves like a skalar.
+   */
+  is_scalar?: boolean;
+  /**
+   * Whether the data can be serialized to json without information loss.
+   */
+  is_json_serializable?: boolean;
 }
 /**
  * Python class and module information.
@@ -278,9 +410,9 @@ export interface Value {
    */
   pedigree_output_name: string;
   /**
-   * The python class that is associtated with this model.
+   * Information about the data type this value is made of.
    */
-  data_type_class: PythonClass;
+  data_type_info: DataTypeInfo;
   /**
    * Hashes for the environments this value was created in.
    */
@@ -309,183 +441,6 @@ export interface Value {
   destiny_backlinks?: {
     [k: string]: string;
   };
-}
-/**
- * A wrapper class that manages and retieves value data and its details.
- */
-export interface ValueInfo {
-  /**
-   * The value id.
-   */
-  value_id: string;
-  /**
-   * The id of the kiara context this value belongs to.
-   */
-  kiara_id: string;
-  /**
-   * The data schema of this value.
-   */
-  value_schema: ValueSchema;
-  /**
-   * The set/unset status of this value.
-   */
-  value_status: ValueStatus;
-  /**
-   * The size of this value, in bytes.
-   */
-  value_size: number;
-  /**
-   * The hash of this value.
-   */
-  value_hash: string;
-  /**
-   * Information about the module and inputs that went into creating this value.
-   */
-  pedigree: ValuePedigree;
-  /**
-   * The output name that produced this value (using the manifest inside the pedigree).
-   */
-  pedigree_output_name: string;
-  /**
-   * The python class that is associtated with this model.
-   */
-  data_type_class: PythonClass;
-  /**
-   * Hashes for the environments this value was created in.
-   */
-  environment_hashes: {
-    [k: string]: {
-      [k: string]: string;
-    };
-  };
-  /**
-   * Information about the environments this value was created in.
-   */
-  enviroments?: {
-    [k: string]: {
-      [k: string]: unknown;
-    };
-  };
-  /**
-   * Links to values that are properties of this value.
-   */
-  property_links?: {
-    [k: string]: string;
-  };
-  /**
-   * Backlinks to values that this value acts as destiny/or property for.
-   */
-  destiny_backlinks?: {
-    [k: string]: string;
-  };
-  /**
-   * The aliases that are registered for this value.
-   */
-  aliases?: string[];
-  /**
-   * Details for the serialization process that was used for this value.
-   */
-  serialized?: PersistedData;
-  /**
-   * References to all the values that act as destiny for this value in this context.
-   */
-  destiny_links?: {
-    [k: string]: string;
-  };
-}
-/**
- * Base class that all models in kiara inherit from.
- *
- * This class provides utility functions for things like rendering the model on terminal or as html, integration into
- * a tree hierarchy of the overall kiara context, hashing, etc.
- */
-export interface PersistedData {
-  /**
-   * The name of the data type for this serialized value.
-   */
-  data_type: string;
-  /**
-   * The (optional) config for the data type for this serialized value.
-   */
-  data_type_config?: {
-    [k: string]: unknown;
-  };
-  /**
-   * An identifying name for the serialization method used.
-   */
-  serialization_profile: string;
-  /**
-   * Optional metadata describing aspects of the serialization used.
-   */
-  metadata?: SerializationMetadata;
-  /**
-   * The codec used to hash the value.
-   */
-  hash_codec?: string;
-  /**
-   * The id of the store that persisted the data.
-   */
-  archive_id: string;
-  /**
-   * Reference-ids that resolve to the values' serialized chunks.
-   */
-  chunk_id_map: {
-    [k: string]: SerializedChunkIDs;
-  };
-}
-/**
- * Base class that all models in kiara inherit from.
- *
- * This class provides utility functions for things like rendering the model on terminal or as html, integration into
- * a tree hierarchy of the overall kiara context, hashing, etc.
- */
-export interface SerializationMetadata {
-  /**
-   * Hash(es) for the environments the value was created/serialized.
-   */
-  environment?: {
-    [k: string]: number;
-  };
-  /**
-   * Suggested manifest configs to use to de-serialize the data.
-   */
-  deserialize?: {
-    [k: string]: Manifest;
-  };
-}
-/**
- * A class to hold the type and configuration for a module instance.
- */
-export interface Manifest {
-  /**
-   * The module type.
-   */
-  module_type: string;
-  /**
-   * The configuration for the module.
-   */
-  module_config?: {
-    [k: string]: unknown;
-  };
-  /**
-   * Whether the configuration of this module was augmented with the module type defaults etc.
-   */
-  is_resolved?: boolean;
-}
-export interface SerializedChunkIDs {
-  type?: "chunk-ids";
-  /**
-   * A list of chunk ids, which will be resolved via the attached data registry.
-   */
-  chunk_id_list: string[];
-  /**
-   * The preferred data archive to get the chunks from.
-   */
-  archive_id?: string;
-  /**
-   * The size of all chunks combined.
-   */
-  size: number;
 }
 /**
  * Base class that all models in kiara inherit from.
@@ -732,6 +687,25 @@ export interface RenderScene {
   };
 }
 /**
+ * A class to hold the type and configuration for a module instance.
+ */
+export interface Manifest {
+  /**
+   * The module type.
+   */
+  module_type: string;
+  /**
+   * The configuration for the module.
+   */
+  module_config?: {
+    [k: string]: unknown;
+  };
+  /**
+   * Whether the configuration of this module was augmented with the module type defaults etc.
+   */
+  is_resolved?: boolean;
+}
+/**
  * An object describing requirements values should satisfy in order to be included in a query result.
  */
 export interface ValueMatcher {
@@ -759,4 +733,410 @@ export interface ValueMatcher {
    * Value must have at least one alias.
    */
   has_alias?: boolean;
+}
+/**
+ * Base class that holds/manages information about an item within kiara.
+ */
+export interface OperationTypeInfo {
+  /**
+   * The registered name for this item type.
+   */
+  type_name: string;
+  /**
+   * Documentation for the item.
+   */
+  documentation: Documentation;
+  /**
+   * Information about authorship for the item.
+   */
+  authors: Authors;
+  /**
+   * Generic properties of this item (description, tags, labels, references, ...).
+   */
+  context: Context;
+  /**
+   * The python class that implements this module type.
+   */
+  python_class: PythonClass;
+}
+/**
+ * Information about all authors of a resource.
+ */
+export interface Authors {
+  /**
+   * The authors/creators of this item.
+   */
+  authors?: Author[];
+  [k: string]: unknown;
+}
+/**
+ * Details about an author of a resource.
+ */
+export interface Author {
+  /**
+   * The full name of the author.
+   */
+  name: string;
+  /**
+   * The email address of the author
+   */
+  email?: string;
+}
+/**
+ * Information about the context of a resource.
+ */
+export interface Context {
+  /**
+   * References for the item.
+   */
+  references?: {
+    [k: string]: Link;
+  };
+  /**
+   * A list of tags for the item.
+   */
+  tags?: string[];
+  /**
+   * A list of labels for the item.
+   */
+  labels?: {
+    [k: string]: string;
+  };
+  [k: string]: unknown;
+}
+/**
+ * A description and url for a reference of any kind.
+ */
+export interface Link {
+  /**
+   * The url.
+   */
+  url: string;
+  /**
+   * A short description of the link content.
+   */
+  desc?: string;
+}
+/**
+ * Base class that holds/manages information about an item within kiara.
+ */
+export interface ValueInfo {
+  /**
+   * The registered name for this item type.
+   */
+  type_name: string;
+  /**
+   * Documentation for the item.
+   */
+  documentation: Documentation;
+  /**
+   * Information about authorship for the item.
+   */
+  authors: Authors;
+  /**
+   * Generic properties of this item (description, tags, labels, references, ...).
+   */
+  context: Context;
+  /**
+   * The id of the value.
+   */
+  value_id: string;
+  /**
+   * The id of the kiara context this value belongs to.
+   */
+  kiara_id: string;
+  /**
+   * The schema that was used for this Value.
+   */
+  value_schema: ValueSchema;
+  /**
+   * The set/unset status of this value.
+   */
+  value_status: ValueStatus;
+  /**
+   * The size of this value, in bytes.
+   */
+  value_size: number;
+  /**
+   * The hash of this value.
+   */
+  value_hash: string;
+  /**
+   * Information about the module and inputs that went into creating this value.
+   */
+  pedigree: ValuePedigree;
+  /**
+   * The output name that produced this value (using the manifest inside the pedigree).
+   */
+  pedigree_output_name: string;
+  /**
+   * Information about the underlying data type and it's configuration.
+   */
+  data_type_info: DataTypeInfo;
+  /**
+   * The aliases that are registered for this value.
+   */
+  aliases?: string[];
+  /**
+   * Details for the serialization process that was used for this value.
+   */
+  serialized?: PersistedData;
+  /**
+   * Property data for this value.
+   */
+  properties?: {
+    [k: string]: unknown;
+  };
+  /**
+   * References to all the values that act as destiny for this value in this context.
+   */
+  destiny_links?: {
+    [k: string]: string;
+  };
+  /**
+   * Hashes for the environments this value was created in.
+   */
+  environment_hashes: {
+    [k: string]: {
+      [k: string]: string;
+    };
+  };
+  /**
+   * Information about the environments this value was created in.
+   */
+  enviroments?: {
+    [k: string]: {
+      [k: string]: unknown;
+    };
+  };
+  /**
+   * Links to values that are properties of this value.
+   */
+  property_links?: {
+    [k: string]: string;
+  };
+  /**
+   * Backlinks to values that this value acts as destiny/or property for.
+   */
+  destiny_backlinks?: {
+    [k: string]: string;
+  };
+  /**
+   * Whether this value is only used internally in kiara.
+   */
+  is_internal?: boolean;
+  /**
+   * Whether this value is stored in at least one data store.
+   */
+  is_persisted: boolean;
+}
+/**
+ * Base class that all models in kiara inherit from.
+ *
+ * This class provides utility functions for things like rendering the model on terminal or as html, integration into
+ * a tree hierarchy of the overall kiara context, hashing, etc.
+ */
+export interface PersistedData {
+  /**
+   * The name of the data type for this serialized value.
+   */
+  data_type: string;
+  /**
+   * The (optional) config for the data type for this serialized value.
+   */
+  data_type_config?: {
+    [k: string]: unknown;
+  };
+  /**
+   * An identifying name for the serialization method used.
+   */
+  serialization_profile: string;
+  /**
+   * Optional metadata describing aspects of the serialization used.
+   */
+  metadata?: SerializationMetadata;
+  /**
+   * The codec used to hash the value.
+   */
+  hash_codec?: string;
+  /**
+   * The id of the store that persisted the data.
+   */
+  archive_id: string;
+  /**
+   * Reference-ids that resolve to the values' serialized chunks.
+   */
+  chunk_id_map: {
+    [k: string]: SerializedChunkIDs;
+  };
+}
+/**
+ * Base class that all models in kiara inherit from.
+ *
+ * This class provides utility functions for things like rendering the model on terminal or as html, integration into
+ * a tree hierarchy of the overall kiara context, hashing, etc.
+ */
+export interface SerializationMetadata {
+  /**
+   * Hash(es) for the environments the value was created/serialized.
+   */
+  environment?: {
+    [k: string]: number;
+  };
+  /**
+   * Suggested manifest configs to use to de-serialize the data.
+   */
+  deserialize?: {
+    [k: string]: Manifest;
+  };
+}
+export interface SerializedChunkIDs {
+  type?: "chunk-ids";
+  /**
+   * A list of chunk ids, which will be resolved via the attached data registry.
+   */
+  chunk_id_list: string[];
+  /**
+   * The preferred data archive to get the chunks from.
+   */
+  archive_id?: string;
+  /**
+   * The size of all chunks combined.
+   */
+  size: number;
+}
+/**
+ * Base class that holds/manages information about an item within kiara.
+ */
+export interface OperationInfo {
+  /**
+   * The registered name for this item type.
+   */
+  type_name: string;
+  /**
+   * Documentation for the item.
+   */
+  documentation: Documentation;
+  /**
+   * Information about authorship for the item.
+   */
+  authors: Authors;
+  /**
+   * Generic properties of this item (description, tags, labels, references, ...).
+   */
+  context: Context;
+  /**
+   * The operation instance.
+   */
+  operation: Operation;
+  /**
+   * The operation types this operation belongs to.
+   */
+  operation_types: string[];
+  /**
+   * The inputs schema for this operation.
+   */
+  input_fields: {
+    [k: string]: FieldInfo;
+  };
+  /**
+   * The outputs schema for this operation.
+   */
+  output_fields: {
+    [k: string]: FieldInfo;
+  };
+}
+export interface FieldInfo {
+  /**
+   * The field name.
+   */
+  field_name: string;
+  /**
+   * The schema of the field.
+   */
+  field_schema: ValueSchema;
+  /**
+   * Information about the data type instance of the associated value.
+   */
+  data_type_info: DataTypeInfo;
+  /**
+   * Whether user input is required (meaning: 'optional' is False, and no default set).
+   */
+  value_required: boolean;
+}
+/**
+ * Base class that all models in kiara inherit from.
+ *
+ * This class provides utility functions for things like rendering the model on terminal or as html, integration into
+ * a tree hierarchy of the overall kiara context, hashing, etc.
+ */
+export interface OperationTypeClassesInfo {
+  /**
+   * The group alias.
+   */
+  group_title?: string;
+  /**
+   * The operation info instances for each type.
+   */
+  item_infos: {
+    [k: string]: OperationTypeInfo;
+  };
+  type_name?: "operation_type";
+}
+/**
+ * Base class that all models in kiara inherit from.
+ *
+ * This class provides utility functions for things like rendering the model on terminal or as html, integration into
+ * a tree hierarchy of the overall kiara context, hashing, etc.
+ */
+export interface ValuesInfo {
+  /**
+   * The group alias.
+   */
+  group_title?: string;
+  /**
+   * The info items.
+   */
+  item_infos: {
+    [k: string]: ItemInfo;
+  };
+}
+/**
+ * Base class that holds/manages information about an item within kiara.
+ */
+export interface ItemInfo {
+  /**
+   * The registered name for this item type.
+   */
+  type_name: string;
+  /**
+   * Documentation for the item.
+   */
+  documentation: Documentation;
+  /**
+   * Information about authorship for the item.
+   */
+  authors: Authors;
+  /**
+   * Generic properties of this item (description, tags, labels, references, ...).
+   */
+  context: Context;
+}
+/**
+ * Base class that all models in kiara inherit from.
+ *
+ * This class provides utility functions for things like rendering the model on terminal or as html, integration into
+ * a tree hierarchy of the overall kiara context, hashing, etc.
+ */
+export interface OperationGroupInfo {
+  /**
+   * The group alias.
+   */
+  group_title?: string;
+  /**
+   * The operation info instances for each type.
+   */
+  item_infos: {
+    [k: string]: OperationInfo;
+  };
 }

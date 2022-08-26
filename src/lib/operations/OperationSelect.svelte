@@ -9,57 +9,33 @@
 
     import {kiara_api} from "../stores.ts";
 
-    import {createEventDispatcher, onMount} from 'svelte';
-
+    import {createEventDispatcher} from 'svelte';
     const dispatch = createEventDispatcher();
 
-    import type {Value, ValueMatcher} from "../models.ts";
+    export let selected = "-- no operations --";
+    let operation_ids: string[] = []
 
-    let selected = {alias: "-- no value --"}
-    export let value_matcher: ValueMatcher = null;
-    export let only_aliases = true;
-    export let field_name = "field";
-
-    $: load_values(value_matcher)
-    $: load_values(only_aliases)
-    $: load_values(field_name)
-
-    let values = []
-
-    async function load_values(ignore?) {
-        let _values;
-        if (only_aliases) {
-            _values = await $kiara_api.context().list_aliases(value_matcher)
-        } else {
-            _values = await $kiara_api.context().list_values(value_matcher)
-        }
-        values = Object.entries(_values).map(function (entry) {
-            let obj = {...entry[1]}
-            obj.alias = entry[0]
-            return obj
-        });
-        if (values.length > 0) {
-            selected = values[0]
-            handleSelect({detail: selected})
-        }
-    }
+    // TODO: subscribe to api and operation changes
+    $kiara_api.context().list_operation_ids().then((op_ids) => {
+        operation_ids = op_ids;
+    })
+    $: (operation_ids.length > 0) ? handleSelect({detail: operation_ids[0]}) : handleSelect({detail: "-- no operations --"})
 
     function handleSelect(event) {
         selected = event.detail
-        dispatch('value_changed', {"value": "value:" + event.detail.value_id, "field_name": field_name});
+        dispatch('operation_changed', event.detail);
     }
 
-    // function handleClear(event) {
-    //     dispatch('value_changed', {"value": null, "field_name": field_name});
+    // async function handleClear(event) {
+    //     dispatch('operation_changed', null);
     // }
 
 </script>
-
 <span>
-<div class="value-select-listbox">
-<Listbox bind:value={selected} on:change={handleSelect} let:open>
+<div class="operation-select-listbox">
+<Listbox value={selected} on:change={handleSelect} let:open>
 		<ListboxButton class="button">
-			<span>{selected.alias}</span>
+			<span>{selected}</span>
 			<svg
           width="20"
           height="20"
@@ -77,9 +53,9 @@
 			</svg>
 		</ListboxButton>
   <ListboxOptions class="options">
-    {#each values as item (item.alias)}
+    {#each operation_ids as item (item)}
       <ListboxOption value={item} class="option">
-        {item.alias}
+        {item}
       </ListboxOption>
     {/each}
   </ListboxOptions>
@@ -87,9 +63,10 @@
   <!--<Select containerStyles="height: 2.2em;" items={Object.keys(values)} bind:value={selected} on:select={handleSelect} on:clear={handleClear}></Select>-->
 </div>
 </span>
+
 <style>
     /* (badly) adapted from: https://joyofcode.xyz/svelte-headless-ui*/
-    .value-select-listbox {
+    .operation-select-listbox {
         max-width: 280px;
         position: relative;
         font-weight: 500;
@@ -97,7 +74,7 @@
         color: hsl(220 20% 2%);;
     }
 
-    .value-select-listbox :global(.button) {
+    .operation-select-listbox :global(.button) {
         width: 100%;
         display: flex;
         justify-content: space-between;
@@ -112,19 +89,18 @@
         border-radius: 10px;
     }
 
-    .value-select-listbox :global(.arrows) {
+    .operation-select-listbox :global(.arrows) {
         width: 20px;
         height: 20px;
         display: block;
     }
 
-    .value-select-listbox :global(.options) {
+    .operation-select-listbox :global(.options) {
         position: absolute;
         top: 44px;
         right: 0;
         left: 0;
         /*width: 200px;*/
-        z-index: 10;
         padding: 1rem;
         /*background-color: hsl(220 20% 4%);*/
         background-color: white;
@@ -132,28 +108,28 @@
         list-style: none;
     }
 
-    .value-select-listbox :global(.option) {
+    .operation-select-listbox :global(.option) {
         padding: 0.8rem 0.4rem;
         cursor: pointer;
     }
 
-    .value-select-listbox :global(.option[aria-disabled='true']) {
+    .operation-select-listbox :global(.option[aria-disabled='true']) {
         color: hsl(220 20% 30%);
     }
 
-    .value-select-listbox :global(.active) {
+    .operation-select-listbox :global(.active) {
         color: hsl(220 80% 70%);
     }
 
-    .value-select-listbox :global(.active)::before {
+    .operation-select-listbox :global(.active)::before {
         content: '👉️ ';
     }
 
-    .value-select-listbox :global(.selected) {
+    .operation-select-listbox :global(.selected) {
         font-weight: 700;
     }
 
-    .value-select-listbox :global(.selected)::before {
+    .operation-select-listbox :global(.selected)::before {
         content: '⭐️ ';
     }
 

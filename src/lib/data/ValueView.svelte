@@ -10,21 +10,26 @@
 
 </script>
 
-{#if (rendered_value != null)}
-
-<div class="rendered">
-    {@html rendered_value}
-</div>
-{:else }
-    <div class="not-rendered">
-        {no_value_text}
+<section>
+  {#if (rendered_value != null)}
+    <div class="rendered">
+      {@html rendered_value}
     </div>
-{/if}
-
+  {:else }
+    <div class="not-rendered">
+      {no_value_text}
+    </div>
+  {/if}
+</section>
 <style>
 
+    section {
+        position: relative;
+        height: calc(100% - 35px);
+        width: calc(100% - 35px);
+    }
+
     .rendered {
-        background-color: white;
         overflow-y: auto;
         overflow-x: auto;
         font-size: small;
@@ -33,6 +38,7 @@
         left: 0;
         height: 100%;
         width: 100%;
+        background-color: white;
     }
 
     .not-rendered {
