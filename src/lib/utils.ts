@@ -1,6 +1,6 @@
 // from: https://stackoverflow.com/questions/29855098/is-there-a-built-in-javascript-function-similar-to-os-path-join
 import type {
-    ActiveJob,
+    ActiveJob, InternalErrorModel,
     Operation,
     OperationInfo,
     RenderValueResult,
@@ -24,6 +24,18 @@ export function pathJoin(parts: string[], sep = "/") {
         return part;
     })
     return parts.join(separator);
+}
+
+export class InternalServiceError extends Error {
+    status: number;
+    msg: string;
+
+    constructor(error_model: InternalErrorModel) {
+        super();
+        this.status = error_model.status
+        this.msg = error_model.msg
+    }
+
 }
 
 export abstract class KiaraContext {
@@ -80,8 +92,7 @@ export class KiaraRestClientContext extends KiaraContext {
         } else {
             response = await fetch(url, {method: 'POST', body: JSON.stringify(matcher)})
         }
-        const result = await response.json()
-        return result
+        return await this.check_status(response)
     }
 
     public async list_values(matcher?: ValueMatcher): Promise<Record<string, Value>> {
@@ -93,8 +104,7 @@ export class KiaraRestClientContext extends KiaraContext {
         } else {
             response = await fetch(url, {method: 'POST', body: JSON.stringify(matcher)})
         }
-        const result = await response.json()
-        return result
+        return await this.check_status(response)
     }
 
     async get_aliases_info(matcher?: ValueMatcher): Promise<Record<string, ValueInfo>> {
@@ -108,8 +118,7 @@ export class KiaraRestClientContext extends KiaraContext {
             response = await fetch(url, {method: 'POST', body: JSON.stringify(matcher)})
         }
 
-        const result = await response.json()
-        return result
+        return await this.check_status(response)
     }
 
     async get_values_info(matcher?: ValueMatcher): Promise<Record<string, ValueInfo>> {
@@ -123,8 +132,7 @@ export class KiaraRestClientContext extends KiaraContext {
             response = await fetch(url, {method: 'POST', body: JSON.stringify(matcher)})
         }
 
-        const result = await response.json()
-        return result
+        return await this.check_status(response)        
     }
 
     async get_alias_names(data_type?: string): Promise<string[]> {
@@ -139,8 +147,7 @@ export class KiaraRestClientContext extends KiaraContext {
         }
 
         const response = await fetch(url, {method: method})
-        const result = await response.json()
-        return result
+        return await this.check_status(response)
     }
 
     public async get_alias_names_for_types(data_types: string[]): Promise<Record<string, string[]>> {
@@ -158,7 +165,7 @@ export class KiaraRestClientContext extends KiaraContext {
         const url = pathJoin([this.url, "data", "render", value])
 
         const response = await fetch(url, {method: 'POST', body: JSON.stringify(render_config)});
-        return await response.json();
+        return await this.check_status(response)        
     }
 
 
@@ -166,7 +173,7 @@ export class KiaraRestClientContext extends KiaraContext {
 
         const url = pathJoin([this.url, "operations", operation_id])
         const response = await fetch(url, {method: 'GET'});
-        return await response.json();
+        return await this.check_status(response)
     }
 
     public async list_operation_ids(filters?: string[], include_internal?: boolean): Promise<string[]> {
@@ -183,7 +190,7 @@ export class KiaraRestClientContext extends KiaraContext {
             method: 'POST',
             body: JSON.stringify({filters: filters, include_internal: include_internal})
         })
-        return await response.json()
+        return await this.check_status(response)
     }
 
     public async list_operations(filters?: string[], include_internal?: boolean) {
@@ -200,7 +207,7 @@ export class KiaraRestClientContext extends KiaraContext {
             method: 'POST',
             body: JSON.stringify({filters: filters, include_internal: include_internal})
         })
-        return await response.json()
+        return await this.check_status(response)
     }
 
     public async validate_inputs(inputs: Record<string, any>, inputs_schema: Record<string, ValueSchema>): Promise<Record<string, string>> {
@@ -208,7 +215,7 @@ export class KiaraRestClientContext extends KiaraContext {
         const url = pathJoin([this.url, "data", "validate", "inputs"])
         const body = JSON.stringify({inputs: inputs, inputs_schema: inputs_schema})
         const response = await fetch(url, {method: 'POST', body: body})
-        return await response.json()
+        return await this.check_status(response)
     }
 
     public async queue_job(operation_id: string, inputs: Record<string, any>, operation_config?: Record<string, any>): Promise<ActiveJob> {
@@ -219,14 +226,24 @@ export class KiaraRestClientContext extends KiaraContext {
             body["operation_config"] = operation_config
         }
         const response = await fetch(url, {method: 'POST', body: JSON.stringify(body)})
-        return await response.json()
+        return await this.check_status(response)
     }
 
     public async monitor_job(job_id: string): Promise<ActiveJob> {
 
         const url = pathJoin([this.url, "jobs", "monitor_job", job_id])
         const response = await fetch(url, {method: 'GET'})
-        return await response.json()
+        return response.json()
+    }
+
+    private async check_status(response: Response) {
+        if ( response.status >=200 && response.status <=300 ) {
+            return await response.json()
+        } else {
+            const error_model = await response.json();
+            const error = new InternalServiceError(error_model.detail);
+            throw error;
+        }
     }
 
 }

@@ -1,25 +1,30 @@
 <script lang="ts">
 
     import {kiara_api} from "../stores.ts"
-    import OperationSelect from "./OperationSelect.svelte";
     import {createEventDispatcher} from 'svelte';
     const dispatch = createEventDispatcher();
 
-    import ValueInputsPanel from "../inputs/ValueInputsPanel.svelte";
-		import type {OperationInfo, FieldInfo, ActiveJob} from "../models";
+		import type {ActiveJob} from "../models";
+		import {InternalServiceError} from "../utils";
 
     export let operation_id: string;
-    export let current_inputs = {}
-    let fields_info: Record<string, FieldInfo>;
+    export let current_inputs = {};
 
-    let latest_job: ActiveJob = null
+    let latest_job: ActiveJob = null;
+		let latest_error: InternalServiceError = null;
 		const jobs: ActiveJob[] = []
 
     async function execute_operation() {
-			latest_job = await $kiara_api.context().queue_job(operation_id, current_inputs)
-			jobs.push(latest_job)
-			console.log("JOB: ", latest_job)
-			dispatch("job_queued", latest_job)
+			try {
+				latest_job = await $kiara_api.context().queue_job(operation_id, current_inputs)
+				jobs.push(latest_job);
+				latest_error = null;
+				dispatch("job_queued", latest_job)
+			} catch (e) {
+				latest_job = null;
+				latest_error = e
+				dispatch("job_queue_error", e)
+			}
     }
 
 
@@ -37,6 +42,9 @@
       Run
     </button>
   </div>
+	{#if latest_error}
+		Job queue error: {latest_error.msg}
+	{/if}
 
 </section>
 

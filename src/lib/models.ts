@@ -1140,3 +1140,22 @@ export interface OperationGroupInfo {
     [k: string]: OperationInfo;
   };
 }
+/**
+ * A model describing an internal server-side error.
+ */
+export interface InternalErrorModel {
+  /**
+   * The status code code.
+   */
+  status: number;
+  /**
+   * The error message.
+   */
+  msg: string;
+  /**
+   * More details about the underlying error.
+   */
+  exception?: {
+    [k: string]: unknown;
+  };
+}
