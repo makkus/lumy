@@ -3,9 +3,12 @@
 	import ExecuteJobPanel from "../../lib/jobs/ExecuteJobPanel.svelte";
 	import JobMonitorPanel from "../../lib/jobs/JobMonitorPanel.svelte";
 	import ValuesView from '../../lib/data/ValuesView.svelte';
+	import OperationInfoPanel from "../../lib/operations/OperationInfoPanel.svelte"
+	import OperationSelect from "../../lib/operations/OperationSelect.svelte";
 
 	import type {ActiveJob} from "../../lib/models";
 	import {InternalServiceError} from "../../lib/utils";
+
 	let current_operation_id = null;
 	let current_inputs = {};
 	let latest_job: ActiveJob = null;
@@ -39,15 +42,21 @@
 
 	}
 
+	async function handle_new_operation(event) {
+        current_operation_id = event.detail
+    }
+
 </script>
 
 <svelte:head>
-	<title>Workflows</title>
+	<title>Operations</title>
 	<meta name="description" content="Svelte demo app" />
 </svelte:head>
 
 <section>
-	<OperationInputs operation_id={current_operation_id} display_operation_select="true" on:operation_changed={handle_operation_changed} on:inputs_updated={handle_inputs_changed}></OperationInputs>
+	<OperationSelect on:operation_changed={handle_new_operation}></OperationSelect>
+	<OperationInfoPanel operation_id={current_operation_id}></OperationInfoPanel>
+	<OperationInputs operation_id={current_operation_id} display_operation_select={false} on:operation_changed={handle_operation_changed} on:inputs_updated={handle_inputs_changed}></OperationInputs>
 	<ExecuteJobPanel operation_id={current_operation_id} current_inputs={current_inputs} on:job_queued={handle_job_queued} on:job_queue_error={handle_job_queue_error}></ExecuteJobPanel>
 	<JobMonitorPanel job_id={latest_job_id}></JobMonitorPanel>
 	<ValuesView values={latest_results}></ValuesView>
@@ -62,10 +71,10 @@
 
 <style>
 
-	section {
-		display: grid;
-		height: 75vh;
-		margin: 2rem;
-	}
+	/*section {*/
+	/*	display: grid;*/
+	/*	height: 75vh;*/
+	/*	margin: 2rem;*/
+	/*}*/
 
 </style>

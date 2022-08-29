@@ -89,72 +89,72 @@
 </span>
 <style>
     /* (badly) adapted from: https://joyofcode.xyz/svelte-headless-ui*/
-    .value-select-listbox {
-        max-width: 280px;
-        position: relative;
-        font-weight: 500;
-        /*color: hsl(220 20% 98%);*/
-        color: hsl(220 20% 2%);;
-    }
+    /*.value-select-listbox {*/
+    /*    max-width: 280px;*/
+    /*    position: relative;*/
+    /*    font-weight: 500;*/
+    /*    !*color: hsl(220 20% 98%);*!*/
+    /*    color: hsl(220 20% 2%);;*/
+    /*}*/
 
-    .value-select-listbox :global(.button) {
-        width: 100%;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 1rem;
-        font-family: inherit;
-        font-size: inherit;
-        color: inherit;
-        /*background-color: hsl(220 20% 2%);*/
-        background-color: white;
-        border: none;
-        border-radius: 10px;
-    }
+    /*.value-select-listbox :global(.button) {*/
+    /*    width: 100%;*/
+    /*    display: flex;*/
+    /*    justify-content: space-between;*/
+    /*    align-items: center;*/
+    /*    padding: 1rem;*/
+    /*    font-family: inherit;*/
+    /*    font-size: inherit;*/
+    /*    color: inherit;*/
+    /*    !*background-color: hsl(220 20% 2%);*!*/
+    /*    background-color: white;*/
+    /*    border: none;*/
+    /*    border-radius: 10px;*/
+    /*}*/
 
-    .value-select-listbox :global(.arrows) {
-        width: 20px;
-        height: 20px;
-        display: block;
-    }
+    /*.value-select-listbox :global(.arrows) {*/
+    /*    width: 20px;*/
+    /*    height: 20px;*/
+    /*    display: block;*/
+    /*}*/
 
-    .value-select-listbox :global(.options) {
-        position: absolute;
-        top: 44px;
-        right: 0;
-        left: 0;
-        /*width: 200px;*/
-        z-index: 10;
-        padding: 1rem;
-        /*background-color: hsl(220 20% 4%);*/
-        background-color: white;
-        border-radius: 10px;
-        list-style: none;
-    }
+    /*.value-select-listbox :global(.options) {*/
+    /*    position: absolute;*/
+    /*    top: 44px;*/
+    /*    right: 0;*/
+    /*    left: 0;*/
+    /*    !*width: 200px;*!*/
+    /*    z-index: 10;*/
+    /*    padding: 1rem;*/
+    /*    !*background-color: hsl(220 20% 4%);*!*/
+    /*    background-color: white;*/
+    /*    border-radius: 10px;*/
+    /*    list-style: none;*/
+    /*}*/
 
-    .value-select-listbox :global(.option) {
-        padding: 0.8rem 0.4rem;
-        cursor: pointer;
-    }
+    /*.value-select-listbox :global(.option) {*/
+    /*    padding: 0.8rem 0.4rem;*/
+    /*    cursor: pointer;*/
+    /*}*/
 
-    .value-select-listbox :global(.option[aria-disabled='true']) {
-        color: hsl(220 20% 30%);
-    }
+    /*.value-select-listbox :global(.option[aria-disabled='true']) {*/
+    /*    color: hsl(220 20% 30%);*/
+    /*}*/
 
-    .value-select-listbox :global(.active) {
-        color: hsl(220 80% 70%);
-    }
+    /*.value-select-listbox :global(.active) {*/
+    /*    color: hsl(220 80% 70%);*/
+    /*}*/
 
-    .value-select-listbox :global(.active)::before {
-        content: '👉️ ';
-    }
+    /*.value-select-listbox :global(.active)::before {*/
+    /*    content: '👉️ ';*/
+    /*}*/
 
-    .value-select-listbox :global(.selected) {
-        font-weight: 700;
-    }
+    /*.value-select-listbox :global(.selected) {*/
+    /*    font-weight: 700;*/
+    /*}*/
 
-    .value-select-listbox :global(.selected)::before {
-        content: '⭐️ ';
-    }
+    /*.value-select-listbox :global(.selected)::before {*/
+    /*    content: '⭐️ ';*/
+    /*}*/
 
 </style>

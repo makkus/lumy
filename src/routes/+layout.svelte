@@ -6,15 +6,14 @@
 	import {KiaraRestClientContext} from "../lib/utils";
 
 	// import {kiara_service_url} from "./data/+page.svelte";
-	let kiara_service_url = "http://localhost:8080"
+	// let kiara_service_url = "http://localhost:8080"
 
 </script>
 
 
 <main>
 <Header />
-	<slot />
-
+<slot />
 <footer>
 	<p>visit <a href="https://dharpa.org/kiara.documentation">dharpa.org/kiara.documentation</a> to learn more about kiara</p>
 </footer>
@@ -22,22 +21,22 @@
 
 
 <style>
-	main {
-		/*display: grid;*/
-		/*grid-template-rows: auto 1fr auto;*/
-		/*width: 98vw;*/
-		/*height: 98vh;*/
-	}
+	/*main {*/
+	/*	!*display: grid;*!*/
+	/*	!*grid-template-rows: auto 1fr auto;*!*/
+	/*	!*width: 98vw;*!*/
+	/*	!*height: 98vh;*!*/
+	/*}*/
 
-	footer {
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		align-items: center;
-		padding: 40px;
-	}
+	/*footer {*/
+	/*	display: flex;*/
+	/*	flex-direction: column;*/
+	/*	justify-content: center;*/
+	/*	align-items: center;*/
+	/*	padding: 40px;*/
+	/*}*/
 
-	footer a {
-		font-weight: bold;
-	}
+	/*footer a {*/
+	/*	font-weight: bold;*/
+	/*}*/
 </style>

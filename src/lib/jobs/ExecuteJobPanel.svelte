@@ -50,15 +50,15 @@
 
 
 <style>
-    section {
-        display: grid;
-        padding: 8px;
-        grid-template-columns: 100%;
-        grid-template-rows: auto 1fr;
-        gap: 1rem;
-    }
+    /*section {*/
+    /*    display: grid;*/
+    /*    padding: 8px;*/
+    /*    grid-template-columns: 100%;*/
+    /*    grid-template-rows: auto 1fr;*/
+    /*    gap: 1rem;*/
+    /*}*/
 
-    .item {
-        height: 100%;
-    }
+    /*.item {*/
+    /*    height: 100%;*/
+    /*}*/
 </style>

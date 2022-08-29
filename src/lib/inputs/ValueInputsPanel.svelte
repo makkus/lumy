@@ -54,9 +54,9 @@
             }
             const type_name = field_info.field_schema.type
 
-            if ( type_name in input_components) {
+            if (type_name in input_components) {
                 _components[key] = input_components[type_name]
-            } else if ( field_info.data_type_info.characteristics.is_scalar ) {
+            } else if (field_info.data_type_info.characteristics.is_scalar) {
                 _components[key] = ValueInputScalar
             } else {
                 _components[key] = ValueInput
@@ -97,39 +97,42 @@
             <div class="input-panel-container">
               {#each Object.entries(required_fields) as [field_name, field_info]}
                 <div class="input-panel">
-                    <svelte:component this={field_components[field_name]} field_info={field_info} current_value={current_values[field_name]}
-                                      on:input_changed={handle_input_changes}></svelte:component>
+                  <svelte:component this={field_components[field_name]} field_info={field_info}
+                                    current_value={current_values[field_name]}
+                                    on:input_changed={handle_input_changes}></svelte:component>
                 </div>
               {/each}
             </div>
+            {#if (Object.keys(required_fields_with_defaults).length > 0)}
+              <div class="required-inputs">
+                <!--        <Disclosure let:open defaultOpen={true}>-->
+                <!--          <DisclosureButton class={'accordion-button-required'}>-->
+                <!--            <span>Required inputs (with defaults)</span>-->
+                <!--          </DisclosureButton>-->
+                <!--          <DisclosurePanel>-->
+                <div class="input-panel-container">
+                  {#each Object.entries(required_fields_with_defaults) as [field_name, field_info]}
+                    <div class="input-panel">
+                      <svelte:component this={field_components[field_name]} field_info={field_info}
+                                        current_value={current_values[field_name]}
+                                        on:input_changed={handle_input_changes}></svelte:component>
+                    </div>
+                  {/each}
+                </div>
+                <!--          </DisclosurePanel>-->
+                <!--        </Disclosure>-->
+              </div>
+            {/if}
+
           </DisclosurePanel>
         </Disclosure>
       </div>
     {/if}
 
-    {#if (Object.keys(required_fields_with_defaults).length > 0)}
-      <div class="required-inputs">
-<!--        <Disclosure let:open defaultOpen={true}>-->
-<!--          <DisclosureButton class={'accordion-button-required'}>-->
-<!--            <span>Required inputs (with defaults)</span>-->
-<!--          </DisclosureButton>-->
-<!--          <DisclosurePanel>-->
-            <div class="input-panel-container">
-              {#each Object.entries(required_fields_with_defaults) as [field_name, field_info]}
-                <div class="input-panel">
-                    <svelte:component this={field_components[field_name]} field_info={field_info} current_value={current_values[field_name]}
-                                      on:input_changed={handle_input_changes}></svelte:component>
-                </div>
-              {/each}
-            </div>
-<!--          </DisclosurePanel>-->
-<!--        </Disclosure>-->
-      </div>
-    {/if}
 
     {#if (Object.keys(optional_fields).length > 0)}
       <div class="optional-inputs">
-        <Disclosure let:open>
+        <Disclosure let:open defaultOpen={true}>
           <DisclosureButton class={'accordion-button-required'}>
             <span>Optional inputs</span>
           </DisclosureButton>
@@ -138,8 +141,9 @@
             <div class="input-panel-container">
               {#each Object.entries(optional_fields) as [field_name, field_info]}
                 <div class="input-panel">
-                    <svelte:component this={field_components[field_name]} field_info={field_info} current_value={current_values[field_name]}
-                                      on:input_changed={handle_input_changes}></svelte:component>
+                  <svelte:component this={field_components[field_name]} field_info={field_info}
+                                    current_value={current_values[field_name]}
+                                    on:input_changed={handle_input_changes}></svelte:component>
                 </div>
               {/each}
             </div>

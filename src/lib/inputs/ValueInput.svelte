@@ -60,30 +60,30 @@
 
 
 <style>
-    section {
-        display: flex;
-        flex-direction: column;
-        align-content: start;
-        border: solid 1px;
-        border-radius: 12px;
-        padding: 0.5em;
-        width: 100%;
-        gap: 8px;
-        background-color: var(--tertiary-color);
-    }
+    /*section {*/
+    /*    display: flex;*/
+    /*    flex-direction: column;*/
+    /*    align-content: start;*/
+    /*    border: solid 1px;*/
+    /*    border-radius: 12px;*/
+    /*    padding: 0.5em;*/
+    /*    width: 100%;*/
+    /*    gap: 8px;*/
+    /*    background-color: var(--tertiary-color);*/
+    /*}*/
 
-    .value-info {
-        margin: 0px;
-        /*background-color: white;*/
-        height: 100%;
-        width: 100%;
-        display: grid;
-    }
+    /*.value-info {*/
+    /*    margin: 0px;*/
+    /*    !*background-color: white;*!*/
+    /*    height: 100%;*/
+    /*    width: 100%;*/
+    /*    display: grid;*/
+    /*}*/
 
-    .top-row {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        justify-content: space-between;
-    }
+    /*.top-row {*/
+    /*    display: grid;*/
+    /*    grid-template-columns: 1fr 1fr;*/
+    /*    justify-content: space-between;*/
+    /*}*/
 
 </style>

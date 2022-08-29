@@ -92,29 +92,29 @@
 
 
 <style>
-    section {
-        /*display: grid;*/
-        /*padding: 8px;*/
-        /*grid-template-columns: 100%;*/
-        /*grid-template-rows: auto 1fr;*/
-        /*gap: 1rem;*/
-    }
+    /*section {*/
+    /*    !*display: grid;*!*/
+    /*    !*padding: 8px;*!*/
+    /*    !*grid-template-columns: 100%;*!*/
+    /*    !*grid-template-rows: auto 1fr;*!*/
+    /*    !*gap: 1rem;*!*/
+    /*}*/
 
-    .logs {
-        display: flex;
-        flex-direction: column;
-    }
+    /*.logs {*/
+    /*    display: flex;*/
+    /*    flex-direction: column;*/
+    /*}*/
 
-    :global(.job-status-button) {
-        /*width: 100%;*/
-        background-color: white;
-        padding: 1em;
-        border-radius: 12px;
-        cursor: pointer;
-    }
+    /*:global(.job-status-button) {*/
+    /*    !*width: 100%;*!*/
+    /*    background-color: white;*/
+    /*    padding: 1em;*/
+    /*    border-radius: 12px;*/
+    /*    cursor: pointer;*/
+    /*}*/
 
-    .button-content {
+    /*.button-content {*/
 
-    }
+    /*}*/
 
 </style>

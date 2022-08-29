@@ -50,44 +50,44 @@
 
   /* WARNING: This is just for demonstration.
       Using :global() in this way can be risky. */
-  :global(.value-tab-selected) {
-    background-color: rgb(59 130 246);
-    color: rgb(255 255 255);
-  }
+  /*:global(.value-tab-selected) {*/
+  /*  background-color: rgb(59 130 246);*/
+  /*  color: rgb(255 255 255);*/
+  /*}*/
 
-  :global(.value-tab-unselected) {
-    background-color: rgb(255 255 255);
-    color: rgb(0 0 0);
-  }
+  /*:global(.value-tab-unselected) {*/
+  /*  background-color: rgb(255 255 255);*/
+  /*  color: rgb(0 0 0);*/
+  /*}*/
 
-    section {
-        display: grid;
-        height: 80vh;
-        gap: 20px;
-        grid-template-columns: minmax(15rem, 35%) minmax(25rem, 65%);
-        padding: 1em;
-    }
+  /*  section {*/
+  /*      display: grid;*/
+  /*      height: 80vh;*/
+  /*      gap: 20px;*/
+  /*      grid-template-columns: minmax(15rem, 35%) minmax(25rem, 65%);*/
+  /*      padding: 1em;*/
+  /*  }*/
 
-    .file-list {
-        display: grid;
-        /*overflow-x: auto;*/
-        background-color: white;
-        /*border: solid 1px;*/
-        border-radius: 12px;
-        /*align-self: stretch;*/
-        /*height: 85%;*/
-    }
+  /*  .file-list {*/
+  /*      display: grid;*/
+  /*      !*overflow-x: auto;*!*/
+  /*      background-color: white;*/
+  /*      !*border: solid 1px;*!*/
+  /*      border-radius: 12px;*/
+  /*      !*align-self: stretch;*!*/
+  /*      !*height: 85%;*!*/
+  /*  }*/
 
-    .value-info {
-        display: grid;
-        justify-content: stretch;
-        /*overflow: auto;*/
-        background-color: white;
-        /*border: solid 1px;*/
-        border-radius: 12px;
-        /*align-self: stretch;*/
-        /*height: 85%;*/
-    }
+  /*  .value-info {*/
+  /*      display: grid;*/
+  /*      justify-content: stretch;*/
+  /*      !*overflow: auto;*!*/
+  /*      background-color: white;*/
+  /*      !*border: solid 1px;*!*/
+  /*      border-radius: 12px;*/
+  /*      !*align-self: stretch;*!*/
+  /*      !*height: 85%;*!*/
+  /*  }*/
 
 
 </style>

@@ -9,6 +9,8 @@
 
     import type {ValueInfo} from "../models";
 
+    export let columns_to_display = ["alias"]
+
 
     var selected_value: string[] = [];
     var current_value: string[] = [];
@@ -27,18 +29,26 @@
         return obj
     })
 
-    let columns = [
-        {
-            key: "alias",
-            title: "Alias",
-            value: v => v.alias
-        },
-        {
-            key: "data_type_name",
-            title: "Type",
-            value: v => v.value_schema.type
-        }
-    ]
+    let columns = []
+    if (columns_to_display.includes("alias")) {
+        columns.push(
+            {
+                key: "alias",
+                title: "Alias",
+                value: v => v.alias
+            }
+        )
+    }
+    if (columns_to_display.includes("data_type")) {
+        columns.push(
+            {
+                key: "data_type_name",
+                title: "Type",
+                value: v => v.value_schema.type
+            }
+        )
+    }
+
 
     function handle_new_value(sel) {
 
@@ -78,20 +88,20 @@
 </section>
 
 <style>
-    section {
-        height: 100%;
-        width: 100%;
-        /*border: solid 1px;*/
-        /*border-radius: 12px;*/
-        padding: 1em;
-    }
+    /*section {*/
+    /*    height: 100%;*/
+    /*    width: 100%;*/
+    /*    !*border: solid 1px;*!*/
+    /*    !*border-radius: 12px;*!*/
+    /*    padding: 1em;*/
+    /*}*/
 
-    :global(.value-list-row) {
-        cursor: pointer;
-        font-size: small;
-    }
+    /*:global(.value-list-row) {*/
+    /*    cursor: pointer;*/
+    /*    font-size: small;*/
+    /*}*/
 
-    :global(.value-list-selected-list-row) {
-        background-color: lightskyblue;
-    }
+    /*:global(.value-list-selected-list-row) {*/
+    /*    background-color: lightskyblue;*/
+    /*}*/
 </style>

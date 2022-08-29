@@ -40,26 +40,26 @@
 
 <style>
 
-    .control-row {
-        display: flex;
-        justify-content: center;
-        gap: 4px;
-    }
+    /*.control-row {*/
+    /*    display: flex;*/
+    /*    justify-content: center;*/
+    /*    gap: 4px;*/
+    /*}*/
 
-    .control-button {
-        font-size: small;
-        border-radius: 8px;
-        border: solid 1px #999999;
-        padding-top: 6px;
-        padding-bottom: 6px;
-        margin-bottom: 8px;
-        margin-left: 4px;
-        margin-right: 4px;
-    }
+    /*.control-button {*/
+    /*    font-size: small;*/
+    /*    border-radius: 8px;*/
+    /*    border: solid 1px #999999;*/
+    /*    padding-top: 6px;*/
+    /*    padding-bottom: 6px;*/
+    /*    margin-bottom: 8px;*/
+    /*    margin-left: 4px;*/
+    /*    margin-right: 4px;*/
+    /*}*/
 
-    .control-button:hover {
-        background-color: var(--primary-color);
-    }
+    /*.control-button:hover {*/
+    /*    background-color: var(--primary-color);*/
+    /*}*/
 
 
 </style>

@@ -39,34 +39,34 @@
 
 <style>
 
-    section {
-        display: grid;
-        height: 80vh;
-        gap: 20px;
-        grid-template-columns: minmax(15rem, 35%) minmax(25rem, 65%);
-        padding: 1em;
-    }
+    /*section {*/
+    /*    display: grid;*/
+    /*    height: 80vh;*/
+    /*    gap: 20px;*/
+    /*    grid-template-columns: minmax(15rem, 35%) minmax(25rem, 65%);*/
+    /*    padding: 1em;*/
+    /*}*/
 
-    .file-list {
-        display: grid;
-        /*overflow-x: auto;*/
-        background-color: white;
-        /*border: solid 1px;*/
-        border-radius: 12px;
-        /*align-self: stretch;*/
-        /*height: 85%;*/
-    }
+    /*.file-list {*/
+    /*    display: grid;*/
+    /*    !*overflow-x: auto;*!*/
+    /*    background-color: white;*/
+    /*    !*border: solid 1px;*!*/
+    /*    border-radius: 12px;*/
+    /*    !*align-self: stretch;*!*/
+    /*    !*height: 85%;*!*/
+    /*}*/
 
-    .value-info {
-        display: grid;
-        justify-content: stretch;
-        /*overflow: auto;*/
-        background-color: white;
-        /*border: solid 1px;*/
-        border-radius: 12px;
-        /*align-self: stretch;*/
-        /*height: 85%;*/
-    }
+    /*.value-info {*/
+    /*    display: grid;*/
+    /*    justify-content: stretch;*/
+    /*    !*overflow: auto;*!*/
+    /*    background-color: white;*/
+    /*    !*border: solid 1px;*!*/
+    /*    border-radius: 12px;*/
+    /*    !*align-self: stretch;*!*/
+    /*    !*height: 85%;*!*/
+    /*}*/
 
 
 </style>

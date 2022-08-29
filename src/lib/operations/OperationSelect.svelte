@@ -66,71 +66,71 @@
 
 <style>
     /* (badly) adapted from: https://joyofcode.xyz/svelte-headless-ui*/
-    .operation-select-listbox {
-        max-width: 280px;
-        position: relative;
-        font-weight: 500;
-        /*color: hsl(220 20% 98%);*/
-        color: hsl(220 20% 2%);;
-    }
+    /*.operation-select-listbox {*/
+    /*    max-width: 280px;*/
+    /*    position: relative;*/
+    /*    font-weight: 500;*/
+    /*    !*color: hsl(220 20% 98%);*!*/
+    /*    color: hsl(220 20% 2%);;*/
+    /*}*/
 
-    .operation-select-listbox :global(.button) {
-        width: 100%;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 1rem;
-        font-family: inherit;
-        font-size: inherit;
-        color: inherit;
-        /*background-color: hsl(220 20% 2%);*/
-        background-color: white;
-        border: none;
-        border-radius: 10px;
-    }
+    /*.operation-select-listbox :global(.button) {*/
+    /*    width: 100%;*/
+    /*    display: flex;*/
+    /*    justify-content: space-between;*/
+    /*    align-items: center;*/
+    /*    padding: 1rem;*/
+    /*    font-family: inherit;*/
+    /*    font-size: inherit;*/
+    /*    color: inherit;*/
+    /*    !*background-color: hsl(220 20% 2%);*!*/
+    /*    background-color: white;*/
+    /*    border: none;*/
+    /*    border-radius: 10px;*/
+    /*}*/
 
-    .operation-select-listbox :global(.arrows) {
-        width: 20px;
-        height: 20px;
-        display: block;
-    }
+    /*.operation-select-listbox :global(.arrows) {*/
+    /*    width: 20px;*/
+    /*    height: 20px;*/
+    /*    display: block;*/
+    /*}*/
 
-    .operation-select-listbox :global(.options) {
-        position: absolute;
-        top: 44px;
-        right: 0;
-        left: 0;
-        /*width: 200px;*/
-        padding: 1rem;
-        /*background-color: hsl(220 20% 4%);*/
-        background-color: white;
-        border-radius: 10px;
-        list-style: none;
-    }
+    /*.operation-select-listbox :global(.options) {*/
+    /*    position: absolute;*/
+    /*    top: 44px;*/
+    /*    right: 0;*/
+    /*    left: 0;*/
+    /*    !*width: 200px;*!*/
+    /*    padding: 1rem;*/
+    /*    !*background-color: hsl(220 20% 4%);*!*/
+    /*    background-color: white;*/
+    /*    border-radius: 10px;*/
+    /*    list-style: none;*/
+    /*}*/
 
-    .operation-select-listbox :global(.option) {
-        padding: 0.8rem 0.4rem;
-        cursor: pointer;
-    }
+    /*.operation-select-listbox :global(.option) {*/
+    /*    padding: 0.8rem 0.4rem;*/
+    /*    cursor: pointer;*/
+    /*}*/
 
-    .operation-select-listbox :global(.option[aria-disabled='true']) {
-        color: hsl(220 20% 30%);
-    }
+    /*.operation-select-listbox :global(.option[aria-disabled='true']) {*/
+    /*    color: hsl(220 20% 30%);*/
+    /*}*/
 
-    .operation-select-listbox :global(.active) {
-        color: hsl(220 80% 70%);
-    }
+    /*.operation-select-listbox :global(.active) {*/
+    /*    color: hsl(220 80% 70%);*/
+    /*}*/
 
-    .operation-select-listbox :global(.active)::before {
-        content: '👉️ ';
-    }
+    /*.operation-select-listbox :global(.active)::before {*/
+    /*    content: '👉️ ';*/
+    /*}*/
 
-    .operation-select-listbox :global(.selected) {
-        font-weight: 700;
-    }
+    /*.operation-select-listbox :global(.selected) {*/
+    /*    font-weight: 700;*/
+    /*}*/
 
-    .operation-select-listbox :global(.selected)::before {
-        content: '⭐️ ';
-    }
+    /*.operation-select-listbox :global(.selected)::before {*/
+    /*    content: '⭐️ ';*/
+    /*}*/
 
 </style>

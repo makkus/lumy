@@ -23,34 +23,34 @@
 </section>
 <style>
 
-    section {
-        position: relative;
-        height: calc(100% - 35px);
-        width: calc(100% - 35px);
-    }
+    /*section {*/
+    /*    position: relative;*/
+    /*    height: calc(100% - 35px);*/
+    /*    width: calc(100% - 35px);*/
+    /*}*/
 
-    .rendered {
-        overflow-y: auto;
-        overflow-x: auto;
-        font-size: small;
-        position: absolute;
-        top: 0;
-        left: 0;
-        height: 100%;
-        width: 100%;
-        background-color: white;
-    }
+    /*.rendered {*/
+    /*    overflow-y: auto;*/
+    /*    overflow-x: auto;*/
+    /*    font-size: small;*/
+    /*    position: absolute;*/
+    /*    top: 0;*/
+    /*    left: 0;*/
+    /*    height: 100%;*/
+    /*    width: 100%;*/
+    /*    background-color: white;*/
+    /*}*/
 
-    .not-rendered {
-        position: absolute;
-        top: 0;
-        left: 0;
-        height: 100%;
-        width: 100%;
-        display: grid;
-        place-items: center;
-        background-color: white;
-    }
+    /*.not-rendered {*/
+    /*    position: absolute;*/
+    /*    top: 0;*/
+    /*    left: 0;*/
+    /*    height: 100%;*/
+    /*    width: 100%;*/
+    /*    display: grid;*/
+    /*    place-items: center;*/
+    /*    background-color: white;*/
+    /*}*/
 
 </style>
 
