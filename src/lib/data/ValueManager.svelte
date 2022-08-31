@@ -1,15 +1,18 @@
 <script lang="ts">
-    import ValueInfo from './ValueInfo.svelte';
-    import ValueList from './ValueList.svelte';
+    import ValueInfoPanel from './ValueInfoPanel.svelte';
+    import ValueInfoList from './ValueInfoList.svelte';
 
     import {createEventDispatcher} from 'svelte';
     const dispatch = createEventDispatcher();
 
-    let current_value: string = null;
+    import type {ValueInfo} from "../models.ts";
+
+
+    let current_value: ValueInfo = null;
 
     function handle_new_value(new_value_event) {
 
-        let sel: string = new_value_event.detail
+        let sel: ValueInfo = new_value_event.detail
 
         if (sel == null) {
             if (current_value == null) {
@@ -19,7 +22,7 @@
                 // current_render_result = null;
             }
         } else {
-            if (current_value != null && (current_value == sel)) {
+            if (current_value != null && (current_value.value_id == sel.value_id)) {
                 return
             }
             current_value = sel
@@ -30,10 +33,10 @@
 
 <section>
   <div class="file-list">
-    <ValueList on:value_changed={handle_new_value}></ValueList>
+    <ValueInfoList on:value_changed={handle_new_value}></ValueInfoList>
   </div>
   <div class="value-info">
-    <ValueInfo value={current_value}/>
+    <ValueInfoPanel value={current_value}/>
   </div>
 </section>
 

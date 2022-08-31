@@ -13,40 +13,79 @@
 
     const dispatch = createEventDispatcher();
 
-    import type {Value, ValueMatcher} from "../models.ts";
+    import type {ValueInfo, ValueMatcher} from "../models.ts";
+    import {NOT_SET_VALUE_ID} from "../utils.ts";
 
-    let selected = {alias: "-- no value --"}
+    // TODO: subscribe to store and new values
+    let all_values_info: Record<string, ValueInfo> = {};
+    let rows = []
+
+    export let selected_alias = null;
+    let current_alias = null;
+    // let selected_value: ValueInfo = null;
+    $: handle_new_alias(selected_alias)
+
+    let current_value = {alias: "-- no value --", value_id: NOT_SET_VALUE_ID}
     export let value_matcher: ValueMatcher = null;
-    export let only_aliases = true;
     export let field_name = "field";
 
-    $: load_values(value_matcher)
-    $: load_values(only_aliases)
-    $: load_values(field_name)
+    // $: update_rows(all_values_info)
 
-    let values = []
+    $: load_values(value_matcher)
+    // $: load_values(field_name)
+
+    function update_rows(new_aliases_info) {
+        rows = Object.entries(new_aliases_info).map(
+            function (entry) {
+                let obj = {...entry[1]}
+                obj.alias = entry[0]
+                return obj
+        })
+    }
 
     async function load_values(ignore?) {
-        let _values;
-        if (only_aliases) {
-            _values = await $kiara_api.context().list_aliases(value_matcher)
-        } else {
-            _values = await $kiara_api.context().list_values(value_matcher)
-        }
-        values = Object.entries(_values).map(function (entry) {
+        all_values_info = await $kiara_api.context().get_aliases_info(value_matcher)
+        update_rows(all_values_info)
+        rows = Object.entries(all_values_info).map(function (entry) {
             let obj = {...entry[1]}
             obj.alias = entry[0]
             return obj
         });
-        if (values.length > 0) {
-            selected = values[0]
-            handleSelect({detail: selected})
+        if (rows.length > 0) {
+            selected_alias = rows[0].alias
         }
     }
 
+    onMount( async () => {
+        await load_values(value_matcher)
+    })
+
+    function handle_new_alias(new_alias) {
+        console.log("HANDLE NEW ALIAS", new_alias)
+        if ( current_alias == new_alias ) {
+            return
+        }
+        if (new_alias == null) {
+            current_alias = null;
+            current_value = null;
+            dispatch("alias_changed", null)
+            dispatch("value_changed", null)
+        } else {
+            current_alias = new_alias
+            current_value = all_values_info[current_alias]
+            dispatch("alias_changed", current_alias)
+            dispatch("value_changed", current_value)
+        }
+
+    }
+
     function handleSelect(event) {
-        selected = event.detail
-        dispatch('value_changed', {"value": "value:" + event.detail.value_id, "field_name": field_name});
+        const _selected_alias = event.detail.alias
+        console.log("SELECTED", _selected_alias)
+        if (_selected_alias == current_alias) {
+            return
+        }
+        selected_alias = _selected_alias
     }
 
     // function handleClear(event) {
@@ -57,9 +96,9 @@
 
 <span>
 <div class="value-select-listbox">
-<Listbox bind:value={selected} on:change={handleSelect} let:open>
+<Listbox bind:value={current_alias} on:change={handleSelect} let:open>
 		<ListboxButton class="button">
-			<span>{selected.alias}</span>
+			<span>{#if (current_alias == null )}--no value --{:else}{current_alias}{/if}</span>
 			<svg
           width="20"
           height="20"
@@ -77,14 +116,14 @@
 			</svg>
 		</ListboxButton>
   <ListboxOptions class="options">
-    {#each values as item (item.alias)}
+    {#each rows as item (item)}
       <ListboxOption value={item} class="option">
         {item.alias}
       </ListboxOption>
     {/each}
   </ListboxOptions>
 </Listbox>
-  <!--<Select containerStyles="height: 2.2em;" items={Object.keys(values)} bind:value={selected} on:select={handleSelect} on:clear={handleClear}></Select>-->
+
 </div>
 </span>
 <style>

@@ -1,6 +1,5 @@
 <script lang="ts">
 
-    import {kiara_api} from "../stores.ts";
     import {
         Tab,
         TabGroup,
@@ -8,14 +7,12 @@
         TabPanel,
         TabPanels,
     } from "@rgossiaux/svelte-headlessui";
-    import ValueInfo from './ValueInfo.svelte';
-    import ValueList from './ValueList.svelte';
+    import ValueInfoPanel from './ValueInfoPanel.svelte';
 
-    import {createEventDispatcher} from 'svelte';
-
-    const dispatch = createEventDispatcher();
 
     export let values: Record<string, string> = {};
+
+    $: console.log("RESULTS", values)
 
 
 </script>
@@ -34,7 +31,7 @@
         {#each Object.entries(values) as [value_name, value_id]}
           <TabPanel>
           <div class="value-info">
-            <ValueInfo value={value_id}/>
+            <ValueInfoPanel value={value_id}/>
           </div>
           </TabPanel>
         {/each}

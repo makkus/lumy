@@ -1,9 +1,5 @@
 <script lang="ts">
 
-    import {createEventDispatcher} from 'svelte';
-
-    const dispatch = createEventDispatcher();
-
     export let rendered_value = null;
     export let no_value_text = "-- no value --"
 

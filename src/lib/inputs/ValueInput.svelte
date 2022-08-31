@@ -4,9 +4,9 @@
 
     const dispatch = createEventDispatcher();
 
-    import ValueInfo from "../data/ValueInfo.svelte";
-    import ValueSelect from "../data/ValueSelect.svelte"
-    import type {FieldInfo} from "../models";
+    import ValueInfoPanel from "../data/ValueInfoPanel.svelte";
+    import ValueInfoSelect from "../data/ValueInfoSelect.svelte"
+    import type {FieldInfo, ValueInfo} from "../models";
 
     export let field_info: FieldInfo;
 
@@ -14,19 +14,27 @@
     let section_style = "section-no-info"
     $: section_style = show_info ? "height: 100%" : ""
 
-    let selected_value = null;
+    let current_value: ValueInfo = null;
 
 
     let disable_preview = "disabled";
-    $: disable_preview = (selected_value == null) ? "disabled" : ""
+    $: disable_preview = (current_value == null) ? "disabled" : ""
 
     function handle_value_changed(event) {
-        selected_value = event.detail.value
-        if (selected_value == null) {
-            show_info = false
+
+        if ( event.detail == null) {
+            if ( current_value == null ) {
+                return
+            }
+        } else if ( current_value != null && event.detail.value_id == current_value.value_id ) {
+            return
         }
-        const data = event.detail
-        dispatch("input_changed", data)
+
+        if ( event.detail == null) {
+            show_info = false;
+        }
+        current_value = event.detail
+        dispatch("input_changed", {value: current_value.value_id, field_name: field_info.field_name})
     }
 
 
@@ -36,7 +44,7 @@
   <div class="top-row">
     <div><b>{field_info.field_name}</b> ({field_info.field_schema.type})</div>
     <label style="justify-self: end">Preview
-      {#if selected_value === null }
+      {#if current_value === null }
         <input type=checkbox bind:checked={show_info} disabled>
       {:else}
         <input type=checkbox bind:checked={show_info}>
@@ -48,12 +56,12 @@
     <div>{field_info.field_schema.doc.doc}</div>
   {/if}
   <div>
-    <ValueSelect field_name={field_info.field_name} value_matcher={{data_types: [field_info.field_schema.type]}}
-                 on:value_changed={handle_value_changed}></ValueSelect>
+    <ValueInfoSelect field_name={field_info.field_name} value_matcher={{data_types: [field_info.field_schema.type]}}
+                 on:value_changed={handle_value_changed}></ValueInfoSelect>
   </div>
   {#if show_info}
     <div class="value-info">
-      <ValueInfo value={selected_value}></ValueInfo>
+      <ValueInfoPanel value={current_value}></ValueInfoPanel>
     </div>
   {/if}
 </section>

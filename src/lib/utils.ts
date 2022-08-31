@@ -12,6 +12,9 @@ import type {
 import * as url from "url";
 import * as path from "path";
 
+export const NOT_SET_VALUE_ID = "00000000-0000-0000-0000-000000000001"
+export const NONE_VALUE_ID = "00000000-0000-0000-0000-000000000002"
+
 export function pathJoin(parts: string[], sep = "/") {
     const separator = sep || '/';
     parts = parts.map((part, index) => {

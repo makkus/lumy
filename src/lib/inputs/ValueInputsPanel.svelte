@@ -73,12 +73,13 @@
     let validated: Record<string, string> = null;
 
     function handle_input_changes(event) {
-        const field = event.detail.field_name
+        const field_name = event.detail.field_name
         const new_value = event.detail.value
-        const old_value = current_values[field]
-        current_values[field] = new_value
 
-        dispatch("input_updated", {"field_name": field, new_value: new_value, old_value: old_value})
+        const old_value = current_values[field_name]
+        current_values[field_name] = new_value
+
+        dispatch("input_updated", {"field_name": field_name, new_value: new_value, old_value: old_value})
         dispatch("inputs_updated", current_values)
 
     }
