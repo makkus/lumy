@@ -21,12 +21,13 @@
 
 
 <style>
-	/*main {*/
-	/*	!*display: grid;*!*/
-	/*	!*grid-template-rows: auto 1fr auto;*!*/
-	/*	!*width: 98vw;*!*/
-	/*	!*height: 98vh;*!*/
-	/*}*/
+	main {
+		background-color: var(--secondary-color);
+		/*display: grid;*/
+		/*grid-template-rows: auto 1fr auto;*/
+		/*width: 98vw;*/
+		/*height: 98vh;*/
+	}
 
 	/*footer {*/
 	/*	display: flex;*/

@@ -40,11 +40,12 @@
 
 <style>
 
-    /*.control-row {*/
-    /*    display: flex;*/
-    /*    justify-content: center;*/
-    /*    gap: 4px;*/
-    /*}*/
+    .control-row {
+        display: flex;
+        justify-content: center;
+        gap: 8px;
+        padding: 4px;
+    }
 
     /*.control-button {*/
     /*    font-size: small;*/

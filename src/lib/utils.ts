@@ -29,6 +29,39 @@ export function pathJoin(parts: string[], sep = "/") {
     return parts.join(separator);
 }
 
+/**
+ * Format bytes as human-readable text.
+ *
+ * Copied from: https://stackoverflow.com/questions/10420352/converting-file-size-in-bytes-to-human-readable-string
+ *
+ * @param bytes Number of bytes.
+ * @param si True to use metric (SI) units, aka powers of 1000. False to use
+ *           binary (IEC), aka powers of 1024.
+ * @param dp Number of decimal places to display.
+ *
+ * @return Formatted string.
+ */
+export function humanFileSize(bytes: number, si=false, dp=2) {
+  const thresh = si ? 1000 : 1024;
+
+  if (Math.abs(bytes) < thresh) {
+    return bytes + ' B';
+  }
+
+  const units = si
+    ? ['kB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']
+    : ['KiB', 'MiB', 'GiB', 'TiB', 'PiB', 'EiB', 'ZiB', 'YiB'];
+  let u = -1;
+  const r = 10**dp;
+
+  do {
+    bytes /= thresh;
+    ++u;
+  } while (Math.round(Math.abs(bytes) * r) / r >= thresh && u < units.length - 1);
+
+
+  return bytes.toFixed(dp) + ' ' + units[u];
+}
 export class InternalServiceError extends Error {
     status: number;
     msg: string;
@@ -50,6 +83,8 @@ export abstract class KiaraContext {
         this.value_cache = {}
         this.operation_cache = {}
     }
+
+    public abstract get_value_info(value: string): Promise<ValueInfo>;
 
     public abstract render_value(value: string, render_config: Record<string, any>): Promise<RenderValueResult>;
 
@@ -74,6 +109,13 @@ export abstract class KiaraContext {
     public abstract queue_job(operation_id: string, inputs: Record<string, any>, operation_config?: Record<string, any>): Promise<ActiveJob>;
 
     public abstract monitor_job(job_id: string): Promise<ActiveJob>;
+
+    public abstract render_value_info(value: string): Promise<string>;
+
+    public abstract get_value_lineage(value: string): Promise<Record<string, any>>;
+
+    // public abstract list_workflows(): Proimise
+
 }
 
 export class KiaraRestClientContext extends KiaraContext {
@@ -85,6 +127,12 @@ export class KiaraRestClientContext extends KiaraContext {
         this.url = url;
     }
 
+    public async get_value_info(value: string): Promise<ValueInfo> {
+        const url = pathJoin([this.url, "data" , "value_info", value])
+
+        const response = await fetch(url, {method: 'GET'})
+        return await this.check_status(response)
+    }
     public async list_aliases(matcher?: ValueMatcher): Promise<Record<string, Value>> {
 
         const url = pathJoin([this.url, "data", "aliases"])
@@ -165,7 +213,7 @@ export class KiaraRestClientContext extends KiaraContext {
     }
 
     public async render_value(value: string, render_config: Record<string, any>): Promise<RenderValueResult> {
-        const url = pathJoin([this.url, "data", "render", value])
+        const url = pathJoin([this.url, "render", "value", value, "html"])
 
         const response = await fetch(url, {method: 'POST', body: JSON.stringify(render_config)});
         return await this.check_status(response)        
@@ -236,7 +284,23 @@ export class KiaraRestClientContext extends KiaraContext {
 
         const url = pathJoin([this.url, "jobs", "monitor_job", job_id])
         const response = await fetch(url, {method: 'GET'})
-        return response.json()
+        return await this.check_status(response)
+    }
+
+    public async render_value_info(value: string): Promise<string> {
+
+        const url = pathJoin([this.url, "render", "value_info", value, "html"])
+
+        const response = await fetch(url, {method: 'POST'})
+        return await this.check_status(response)
+    }
+
+    public async get_value_lineage(value: string): Promise<Record<string, any>> {
+
+        const url = pathJoin([this.url, "data", "lineage", value])
+
+        const response = await fetch(url, {method: 'GET'})
+        return await this.check_status(response)
     }
 
     private async check_status(response: Response) {

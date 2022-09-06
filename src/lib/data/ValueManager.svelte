@@ -3,6 +3,7 @@
     import ValueInfoList from './ValueInfoList.svelte';
 
     import {createEventDispatcher} from 'svelte';
+
     const dispatch = createEventDispatcher();
 
     import type {ValueInfo} from "../models.ts";
@@ -31,45 +32,63 @@
 
 </script>
 
-<section>
-  <div class="file-list">
-    <ValueInfoList on:value_changed={handle_new_value}></ValueInfoList>
+<div class="value-manager">
+    <div class="file-list">
+      <ValueInfoList on:value_changed={handle_new_value}></ValueInfoList>
+    </div>
+  <div class="value-info-wrap">
+    <div class="value-info">
+      <ValueInfoPanel value={current_value}/>
+    </div>
   </div>
-  <div class="value-info">
-    <ValueInfoPanel value={current_value}/>
-  </div>
-</section>
+</div>
 
 <style>
 
-    /*section {*/
-    /*    display: grid;*/
-    /*    height: 80vh;*/
-    /*    gap: 20px;*/
-    /*    grid-template-columns: minmax(15rem, 35%) minmax(25rem, 65%);*/
-    /*    padding: 1em;*/
-    /*}*/
+    .value-manager {
+        height: 100%;
+        display: flex;
+        flex-direction: row;
+        /*justify-content: start;*/
+        /*justify-content: stretch;*/
+        gap: 20px;
+        padding: 1em;
+    }
 
-    /*.file-list {*/
-    /*    display: grid;*/
-    /*    !*overflow-x: auto;*!*/
-    /*    background-color: white;*/
-    /*    !*border: solid 1px;*!*/
-    /*    border-radius: 12px;*/
-    /*    !*align-self: stretch;*!*/
-    /*    !*height: 85%;*!*/
-    /*}*/
+    .file-list {
+        background-color: white;
+        border: solid 1px;
+        border-radius: 1rem;
+        padding: 0.5em 1em;
+        overflow-y: scroll;
+        width: 30%;
+    }
 
-    /*.value-info {*/
-    /*    display: grid;*/
-    /*    justify-content: stretch;*/
-    /*    !*overflow: auto;*!*/
-    /*    background-color: white;*/
-    /*    !*border: solid 1px;*!*/
-    /*    border-radius: 12px;*/
-    /*    !*align-self: stretch;*!*/
-    /*    !*height: 85%;*!*/
-    /*}*/
+    .value-info-wrap {
+        width: 100%;
+        /*height: 100%;*/
+        /*max-width: 100%;*/
+        /*min-height: 100%;*/
+        border: solid 1px;
+        border-radius: 1rem;
+        background-color: white;
+        overflow: auto;
+    }
+
+    .value-info {
+        /*justify-content: stretch;*/
+        /*overflow: auto;*/
+        /*height: 100%;*/
+        /*font-size: 0.9rem;*/
+        /*border-radius: 1rem;*/
+        padding: 1em 2em;
+        /*background-color: yellow;*/
+        /*max-height: 200px;*/
+        /*border: solid 1px;*/
+        /*border-radius: 12px;*/
+        /*align-self: stretch;*/
+        /*height: 85%;*/
+    }
 
 
 </style>

@@ -8,9 +8,10 @@
     import {kiara_api} from "../stores.ts";
 
     import type {ValueInfo} from "../models";
+    import {humanFileSize} from "../utils";
 
     // TODO: subscribe to store and new values
-    export let columns_to_display = ["alias", "data_type"]
+    export let columns_to_display = ["alias"]
     export let selected_alias = null;
 
     let all_values_info: Record<string, ValueInfo> = {};
@@ -31,12 +32,21 @@
             }
         )
     }
-    if (columns_to_display.includes("data_type")) {
+    if (columns_to_display.includes("data_type_name")) {
         columns.push(
             {
                 key: "data_type_name",
                 title: "Type",
                 value: v => v.value_schema.type
+            }
+        )
+    }
+    if (columns_to_display.includes("size")) {
+        columns.push(
+            {
+                key: "value_size",
+                title: "Size",
+                value: v => humanFileSize(v.value_size)
             }
         )
     }

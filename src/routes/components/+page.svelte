@@ -19,7 +19,7 @@
     function handle_new_alias(sel) {
 
         if (selected_alias == null) {
-            selected_value_render_result = null;
+            selected_value_render_result = "-- no value selected --";
         } else {
             render_value({})
 
@@ -50,25 +50,25 @@
 <section>
   <div id="ValueInfoSelect" class="component-item">
     <h2>ValueInfoSelect</h2>
-    <div class="component">
+    <div class="component" style="width: 300px">
       <ValueInfoSelect bind:selected_alias={selected_alias}></ValueInfoSelect>
     </div>
   </div>
   <div id="ValueInfoList" class="component-item">
     <h2>ValueInfoList</h2>
     <div class="component">
-      <ValueInfoList bind:selected_alias={selected_alias}></ValueInfoList>
+      <ValueInfoList bind:selected_alias={selected_alias} columns_to_display={["alias", "data_type_name", "size"]}></ValueInfoList>
     </div>
   </div>
   <div id="ValueView" class="component-item">
     <h2>RenderedValuePanel</h2>
-    <div class="component">
+    <div class="component-overflow" >
       <RenderedValuePanel rendered_value={selected_value_render_result}></RenderedValuePanel>
     </div>
   </div>
   <div id="ValueManager" class="component-item">
     <h2>ValueManager</h2>
-    <div class="component">
+    <div class="component-overflow">
       <ValueManager></ValueManager>
     </div>
   </div>
@@ -87,6 +87,8 @@
         display: grid;
         grid-template-columns: 100%;
         justify-items: start;
+        width: 100%;
+        max-height: 50vh;
     }
 
     .component-item h2 {
@@ -97,8 +99,16 @@
 
     .component {
         background-color: var(--tertiary-color);
-        width: 100%;
         padding: 1rem;
+        width: 100%;
+        /*overflow: auto;*/
+
+    }
+    .component-overflow {
+        background-color: var(--tertiary-color);
+        padding: 1rem;
+        width: 100%;
+        overflow: auto;
     }
 
 </style>
