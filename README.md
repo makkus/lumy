@@ -25,6 +25,12 @@ Create a conda/mamba environment, then install those packages:
 mamba install -c conda-forge -c dharpa -c anaconda kiara kiara_plugin.network_analysis kiara_plugin.language_processing
 ```
 
+We also need the `duckdb` package, because there is an issue with its conda package, we use pip (also, another package I forgot to add to the dependencies):
+
+```
+pip install duckdb json2html
+```
+
 #### Other dependencies
 
 Then, we need two as of yet unreleased Python dependencies, so, with the activated conda/mamba environment, do:
@@ -42,6 +48,12 @@ This makes it easier to work on the frontend stuff, since there is no way yet to
 git clone https://github.com/DHARPA-Project/kiara.examples.git
 kiara run kiara.examples/examples/pipelines/network_analysis/create_network_graph.yaml --save network
 kiara run kiara.examples/examples/pipelines/topic_modeling/topic_modeling.yaml --save topic
+```
+
+Also, we need to create an example workflow called `topic_modeling`, otherwise the lumy frontend will error out:
+
+```
+kiara workflow create topic_modeling kiara.examples/examples/pipelines/topic_modeling/topic_modeling.yaml
 ```
 
 #### Run *kiara* rest service
@@ -70,8 +82,7 @@ npm install
 npm run dev
 ```
 
-- 
-
+Now open a browser for: http://127.0.0.1:5173/data
 
 
 ## Copyright & license
