@@ -5,6 +5,7 @@
 	import ValuesView from '../../lib/data/ValuesView.svelte';
 	import OperationInfoPanel from "../../lib/operations/OperationInfoPanel.svelte"
 	import OperationSelect from "../../lib/operations/OperationSelect.svelte";
+	import WorkflowPage from "$lib/workflows/WorkflowPage.svelte";
 
 
 </script>
@@ -15,6 +16,8 @@
 </svelte:head>
 
 <section>
+
+	<WorkflowPage workflow_id_or_alias="topic_modeling"></WorkflowPage>
 
 </section>
 

@@ -42,6 +42,7 @@
 		"async": "^3.2.4",
 		"cookie": "^0.4.1",
 		"elkjs": "^0.8.2",
+		"svelte-json-tree": "^1.0.0",
 		"svelte-select": "^4.4.7",
 		"svelte-table": "^0.5.0",
 		"svelvet": "^2.0.2"

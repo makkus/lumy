@@ -2,12 +2,12 @@
 import type {
     ActiveJob, InternalErrorModel,
     Operation,
-    OperationInfo,
+    OperationInfo, PipelineStructureInfo,
     RenderValueResult,
     Value,
     ValueInfo,
     ValueMatcher,
-    ValueSchema
+    ValueSchema, WorkflowInfo
 } from "./models";
 import * as url from "url";
 import * as path from "path";
@@ -114,7 +114,9 @@ export abstract class KiaraContext {
 
     public abstract get_value_lineage(value: string): Promise<Record<string, any>>;
 
-    // public abstract list_workflows(): Proimise
+    public abstract get_workflow_info(workflow_id: string): Promise<WorkflowInfo>;
+
+    public abstract get_pipeline_structure(pipeline: string): Promise<PipelineStructureInfo>;
 
 }
 
@@ -303,6 +305,21 @@ export class KiaraRestClientContext extends KiaraContext {
         return await this.check_status(response)
     }
 
+    public async get_workflow_info(workflow_id: string) {
+
+        const url = pathJoin([this.url, "workflows", "workflow_info", workflow_id])
+
+        const response = await fetch(url, {method: "GET"})
+        return await this.check_status(response)
+        
+    }
+
+    public async get_pipeline_structure(pipeline: string) {
+        const url = pathJoin([this.url, "pipelines", "structure", pipeline])
+        const response = await fetch(url, {method: "Get"})
+        return await this.check_status(response)
+    }
+
     private async check_status(response: Response) {
         if ( response.status >=200 && response.status <=300 ) {
             return await response.json()
@@ -312,6 +329,8 @@ export class KiaraRestClientContext extends KiaraContext {
             throw error;
         }
     }
+
+
 
 }
 

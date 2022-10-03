@@ -15,6 +15,7 @@
     const dispatch = createEventDispatcher();
 
     import {kiara_api} from "../stores.ts";
+    import JSONTree from "svelte-json-tree";
 
     // from: https://stackoverflow.com/questions/14810506/map-function-for-objects-instead-of-arrays
     const objectMap = (obj, fn) =>
@@ -88,7 +89,8 @@
 
 <section>
   <div>
-    {#if (Object.keys(required_fields).length > 0)}
+
+    {#if (Object.keys(required_fields).length > 0) || (Object.keys(required_fields_with_defaults).length > 0)}
       <div class="required-inputs">
         <Disclosure let:open defaultOpen={true}>
           <DisclosureButton class={'accordion-button-required'}>
