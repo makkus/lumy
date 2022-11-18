@@ -124,7 +124,7 @@ export class KiaraRestClientContext extends KiaraContext {
 
     url: string;
 
-    constructor(url = "http://localhost:8080") {
+    constructor(url: string) {
         super()
         this.url = url;
     }
@@ -340,11 +340,13 @@ export class KiaraAPI {
     context_name: string;
     contexts: Record<string, KiaraContext>;
 
-    constructor(default_url = "http://localhost:8080") {
-        this.default_url = default_url;
+    constructor(backend_url: string = "http://localhost:8080") {
+        console.log("BACKEND")
+        console.log(backend_url)
+        this.default_url = backend_url;
         this.context_name = "default";
         this.contexts = {};
-        this.contexts["default"] = new KiaraRestClientContext(default_url);
+        this.contexts["default"] = new KiaraRestClientContext(backend_url);
     }
 
     public context(context_name?: string): KiaraContext {
