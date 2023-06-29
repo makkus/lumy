@@ -162,11 +162,13 @@ export class KiaraRestClientContext extends KiaraContext {
 
     async get_aliases_info(matcher?: ValueMatcher): Promise<Record<string, ValueInfo>> {
 
+        console.log("xxxxx")
+        console.log(matcher);
         const url = pathJoin([this.url, "data", "aliases_info"])
         let data: Record<string, any>;
         let response;
         if (matcher == null) {
-            response = await fetch(url, {method: 'POST'})
+            response = await fetch(url, {method: 'POST', body: "{}"})
         } else {
             response = await fetch(url, {method: 'POST', body: JSON.stringify(matcher)})
         }
@@ -216,6 +218,9 @@ export class KiaraRestClientContext extends KiaraContext {
 
     public async render_value(value: string, render_config: Record<string, any>): Promise<RenderValueResult> {
         const url = pathJoin([this.url, "render", "value", value, "html"])
+
+        console.log("value", value)
+        console.log("CONFIG", render_config)
 
         const response = await fetch(url, {method: 'POST', body: JSON.stringify(render_config)});
         return await this.check_status(response)        
@@ -340,7 +345,7 @@ export class KiaraAPI {
     context_name: string;
     contexts: Record<string, KiaraContext>;
 
-    constructor(backend_url: string = "http://localhost:8080") {
+    constructor(backend_url = "http://localhost:8080") {
         console.log("BACKEND")
         console.log(backend_url)
         this.default_url = backend_url;

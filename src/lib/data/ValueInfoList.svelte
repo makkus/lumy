@@ -59,8 +59,8 @@
         all_values_info = await $kiara_api.context().get_aliases_info();
         rows = Object.entries(all_values_info).map(
             function (entry) {
-                let obj = {...entry[1]}
-                obj.alias = entry[0]
+                let obj = {...entry[1]};
+                obj.alias = entry[0];
                 return obj
         })
         // handle_new_selected_alias(selected_alias)
